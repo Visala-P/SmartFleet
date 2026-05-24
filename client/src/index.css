@@ -1,0 +1,294 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 220 20% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --primary: 233 78% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 214 32% 91%;
+  --secondary-foreground: 221 39% 15%;
+  --accent: 198 90% 52%;
+  --accent-foreground: 221 39% 15%;
+  --muted: 214 30% 95%;
+  --muted-foreground: 215 16% 42%;
+  --border: 214 22% 88%;
+  --input: 214 22% 88%;
+  --ring: 233 78% 55%;
+  --radius: 0.85rem;
+}
+
+.dark {
+  --background: 222 47% 9%;
+  --foreground: 214 32% 96%;
+  --card: 223 44% 13%;
+  --card-foreground: 214 32% 96%;
+  --primary: 234 89% 67%;
+  --primary-foreground: 223 44% 13%;
+  --secondary: 220 31% 17%;
+  --secondary-foreground: 214 32% 96%;
+  --accent: 188 95% 43%;
+  --accent-foreground: 214 32% 96%;
+  --muted: 221 28% 19%;
+  --muted-foreground: 215 20% 72%;
+  --border: 220 25% 22%;
+  --input: 220 25% 22%;
+  --ring: 234 89% 67%;
+}
+
+* {
+  @apply border-border;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  background-image: radial-gradient(circle at 8% 8%, rgba(56, 189, 248, 0.08), transparent 28%),
+    radial-gradient(circle at 90% 4%, rgba(99, 102, 241, 0.06), transparent 34%);
+}
+
+.glass {
+  @apply bg-card/85 backdrop-blur-xl border border-border/70 shadow-[0_12px_32px_rgba(15,23,42,0.06)];
+}
+
+/* Light mode polish for dark utility classes that still exist in the app shell. */
+:root[data-theme="light"] body {
+  background-image: radial-gradient(circle at 10% 8%, rgba(56, 189, 248, 0.08), transparent 30%),
+    radial-gradient(circle at 90% 0%, rgba(99, 102, 241, 0.06), transparent 32%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(241, 245, 249, 0.98));
+}
+
+:root[data-theme="light"] .bg-slate-950,
+:root[data-theme="light"] .bg-slate-900,
+:root[data-theme="light"] .bg-slate-800 {
+  background-color: hsl(var(--card)) !important;
+  background-image: none !important;
+}
+
+:root[data-theme="light"] .bg-black {
+  background-color: hsl(var(--background)) !important;
+}
+
+:root[data-theme="light"] .bg-slate-950\/98,
+:root[data-theme="light"] .bg-slate-950\/95,
+:root[data-theme="light"] .bg-slate-950\/85,
+:root[data-theme="light"] .bg-slate-950\/70,
+:root[data-theme="light"] .bg-slate-900\/80,
+:root[data-theme="light"] .bg-slate-900\/95,
+:root[data-theme="light"] .bg-slate-900\/85,
+:root[data-theme="light"] .bg-slate-800\/80 {
+  background-color: hsl(var(--card)) !important;
+  background-image: none !important;
+}
+
+:root[data-theme="light"] .text-slate-100,
+:root[data-theme="light"] .text-white {
+  color: hsl(var(--foreground)) !important;
+}
+
+:root[data-theme="light"] .text-slate-200 {
+  color: hsl(222 28% 22%) !important;
+}
+
+:root[data-theme="light"] .text-slate-500,
+:root[data-theme="light"] .text-slate-600 {
+  color: hsl(215 16% 42%) !important;
+}
+
+:root[data-theme="light"] .text-slate-300,
+:root[data-theme="light"] .text-slate-400 {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+:root[data-theme="light"] .border-slate-800,
+:root[data-theme="light"] .border-slate-700 {
+  border-color: hsl(var(--border)) !important;
+}
+
+:root[data-theme="light"] .border-white\/10,
+:root[data-theme="light"] .border-white\/20 {
+  border-color: hsl(var(--border)) !important;
+}
+
+:root[data-theme="light"] .bg-white\/5 {
+  background-color: hsl(var(--muted)) !important;
+}
+
+:root[data-theme="light"] .bg-white\/6,
+:root[data-theme="light"] .bg-white\/10 {
+  background-color: hsl(var(--secondary)) !important;
+}
+
+:root[data-theme="light"] .bg-gradient-to-r,
+:root[data-theme="light"] .bg-gradient-to-br,
+:root[data-theme="light"] .bg-gradient-to-b,
+:root[data-theme="light"] .bg-gradient-to-t,
+:root[data-theme="light"] .bg-gradient-to-l,
+:root[data-theme="light"] .bg-gradient-to-tr,
+:root[data-theme="light"] .bg-gradient-to-bl,
+:root[data-theme="light"] .bg-gradient-to-tl {
+  background-image: none !important;
+}
+
+:root[data-theme="light"] [class*="from-slate-"],
+:root[data-theme="light"] [class*="via-slate-"],
+:root[data-theme="light"] [class*="to-slate-"],
+:root[data-theme="light"] [class*="from-black"],
+:root[data-theme="light"] [class*="to-black"] {
+  background-image: none !important;
+}
+
+:root[data-theme="light"] .shadow-black\/50,
+:root[data-theme="light"] .shadow-slate-950\/30,
+:root[data-theme="light"] .shadow-slate-950\/20,
+:root[data-theme="light"] .shadow-slate-950\/10 {
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06) !important;
+}
+
+:root[data-theme="light"] .recharts-cartesian-grid line {
+  stroke: rgba(148, 163, 184, 0.22) !important;
+}
+
+:root[data-theme="light"] .recharts-cartesian-axis-tick-value {
+  fill: #475569 !important;
+}
+
+:root[data-theme="light"] .recharts-legend-item-text,
+:root[data-theme="light"] .recharts-tooltip-label,
+:root[data-theme="light"] .recharts-tooltip-item-name,
+:root[data-theme="light"] .recharts-tooltip-item-value {
+  color: #0f172a !important;
+}
+
+:root[data-theme="light"] .recharts-default-tooltip {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(203, 213, 225, 0.9) !important;
+  color: #0f172a !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08) !important;
+}
+
+:root[data-theme="light"] .recharts-default-tooltip .recharts-tooltip-item-list {
+  color: #334155 !important;
+}
+
+:root[data-theme="light"] .recharts-polar-grid-concentric-circle,
+:root[data-theme="light"] .recharts-polar-angle-axis-line,
+:root[data-theme="light"] .recharts-radial-axis-line {
+  stroke: rgba(148, 163, 184, 0.22) !important;
+}
+
+/* Improve icon legibility in light mode without changing component code. */
+:root[data-theme="light"] .lucide {
+  stroke-width: 2.35;
+}
+
+/* Dashboard-wide readability upgrades for light mode. */
+:root[data-theme="light"] .dashboard-contrast {
+  color: #0f172a;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-slate-400,
+:root[data-theme="light"] .dashboard-contrast .text-slate-500,
+:root[data-theme="light"] .dashboard-contrast .text-slate-600,
+:root[data-theme="light"] .dashboard-contrast .text-muted-foreground {
+  color: #334155 !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-slate-300 {
+  color: #1e293b !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-white,
+:root[data-theme="light"] .dashboard-contrast .text-slate-100,
+:root[data-theme="light"] .dashboard-contrast .text-slate-200 {
+  color: #0f172a !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-emerald-100,
+:root[data-theme="light"] .dashboard-contrast .text-emerald-200,
+:root[data-theme="light"] .dashboard-contrast .text-emerald-300 {
+  color: #166534 !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-amber-100,
+:root[data-theme="light"] .dashboard-contrast .text-amber-200,
+:root[data-theme="light"] .dashboard-contrast .text-amber-300 {
+  color: #92400e !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-rose-100,
+:root[data-theme="light"] .dashboard-contrast .text-rose-200,
+:root[data-theme="light"] .dashboard-contrast .text-rose-300 {
+  color: #9f1239 !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-blue-100,
+:root[data-theme="light"] .dashboard-contrast .text-blue-200,
+:root[data-theme="light"] .dashboard-contrast .text-blue-300 {
+  color: #1e40af !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .text-cyan-100,
+:root[data-theme="light"] .dashboard-contrast .text-cyan-200,
+:root[data-theme="light"] .dashboard-contrast .text-cyan-300 {
+  color: #0e7490 !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .border-white\/10,
+:root[data-theme="light"] .dashboard-contrast .border-white\/20 {
+  border-color: #cbd5e1 !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast .bg-white\/5,
+:root[data-theme="light"] .dashboard-contrast .bg-white\/6,
+:root[data-theme="light"] .dashboard-contrast .bg-white\/10 {
+  background-color: #e2e8f0 !important;
+}
+
+:root[data-theme="light"] .dashboard-contrast p,
+:root[data-theme="light"] .dashboard-contrast span,
+:root[data-theme="light"] .dashboard-contrast td,
+:root[data-theme="light"] .dashboard-contrast th,
+:root[data-theme="light"] .dashboard-contrast button {
+  font-weight: 600;
+}
+
+:root[data-theme="light"] .dashboard-contrast h1,
+:root[data-theme="light"] .dashboard-contrast h2,
+:root[data-theme="light"] .dashboard-contrast h3,
+:root[data-theme="light"] .dashboard-contrast h4 {
+  font-weight: 700;
+}
+
+/* Dashboard-wide font-weight boost (default / dark mode) */
+.dashboard-contrast p,
+.dashboard-contrast span,
+.dashboard-contrast td,
+.dashboard-contrast th,
+.dashboard-contrast button {
+  font-weight: 600;
+}
+
+.dashboard-contrast h1,
+.dashboard-contrast h2,
+.dashboard-contrast h3,
+.dashboard-contrast h4 {
+  font-weight: 700;
+}
+
+/* Sidebar - small font weight bump only (keeps previous colors/visuals) */
+.fixed.inset-y-0.left-0 .truncate,
+.fixed.inset-y-0.left-0 nav a span,
+.fixed.inset-y-0.left-0 .text-muted-foreground {
+  font-weight: 600 !important;
+}
