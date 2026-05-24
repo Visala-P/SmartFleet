@@ -31,11 +31,14 @@ const startServer = async () => {
   const app = express();
 
   app.use(
-    cors({
-      origin: config.corsOrigin.split(",").map((item) => item.trim()),
-      credentials: true,
-    })
-  );
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://smart-fleet-55grt1fti-visala-ps-projects.vercel.app",
+    ],
+    credentials: true,
+  })
+);
   app.use(express.json());
   app.get("/", (req, res) => {
   res.send("SmartFleet Backend Running Successfully");
