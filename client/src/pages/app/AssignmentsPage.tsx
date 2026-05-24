@@ -17,7 +17,7 @@ export const AssignmentsPage = () => {
               <CardTitle>{s.shipmentId}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{s.origin} → {s.destination}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{s.origin} → {s.destination}</p>
               <div className="mt-3 flex items-center justify-between">
                 <div>
                   <p className="text-sm">Vehicle: {s.vehicle?.vehicleNumber || "—"}</p>

@@ -42,10 +42,9 @@ import { LiveIndicator } from "@/components/shared/LiveIndicator";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Modal } from "@/components/ui/modal";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useSmartFleetSimulation } from "@/context/SmartFleetSimulationContext";
 import { cn } from "@/lib/utils";
-import type { LogisticsAlert, LogisticsDriver, LogisticsKpi, LogisticsShipment, LogisticsVehicle, LogisticsMaintenanceLog, LogisticsLog } from "@/types/logistics";
+import type { LogisticsAlert, LogisticsDriver, LogisticsKpi, LogisticsShipment, LogisticsMaintenanceLog, LogisticsLog } from "@/types/logistics";
 
 const chartColors = ["#22d3ee", "#38bdf8", "#4f46e5", "#14b8a6", "#f59e0b"];
 
@@ -78,6 +77,18 @@ const metricCardVariants = {
   hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0 },
 };
+
+const sanitizeName = (raw = "") =>
+  String(raw)
+    .replace(/\bdev\b/gi, "")
+    .replace(/\bdeveloper\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+// Shared Tailwind class groups to reduce repetition
+const smallButtonClasses = "inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-100 transition hover:bg-white/10";
+const seeMoreButtonClasses = "inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10";
+const cardItemClasses = "rounded-2xl border border-white/10 bg-white/5 p-3";
 
 type ChartViewKey = "monthlyDeliveries" | "fleetUtilization" | "fuelUsage" | "driverPerformance" | "routeEfficiency";
 type DashboardViewKey = ChartViewKey | "alerts" | "shipments" | "maintenance" | "activity" | "drivers" | "insights";
@@ -144,7 +155,7 @@ export const AdminDashboard = () => {
 
     const topDrivers: LogisticsDriver[] = sortByNumber(
       drivers.slice(0, 8).map((driver) => {
-        const cleanedName = (driver.name || "").replace(/\bdev\b/gi, "").replace(/\bdeveloper\b/gi, "").replace(/\s+/g, " ").trim() || "Driver";
+        const cleanedName = sanitizeName(driver.name) || "Driver";
         return {
           id: driver._id,
           name: cleanedName,
@@ -184,7 +195,7 @@ export const AdminDashboard = () => {
         id: shipment._id,
         title: `Shipment ${shipment.shipmentId} delayed`,
         details: `${shipment.origin} → ${shipment.destination} requires escalation.`,
-        severity: index === 0 ? "critical" : "high",
+        severity: index === 0? ("critical" as const): ("high" as const),
         createdAt: shipment.estimatedDelivery,
         acknowledged: false,
       })),
@@ -192,7 +203,7 @@ export const AdminDashboard = () => {
         id: vehicle._id,
         title: `${vehicle.vehicleNumber} maintenance warning`,
         details: `Next service due on ${formatTimestamp(vehicle.nextServiceDate)}.`,
-        severity: "medium",
+        severity: "medium" as const,
         createdAt: vehicle.nextServiceDate,
         acknowledged: false,
       })),
@@ -306,7 +317,7 @@ export const AdminDashboard = () => {
   const driverChartData = useMemo(
     () =>
       derived.topDrivers.slice(0, 6).map((driver) => {
-        const cleaned = (driver.name || "").replace(/\bdev\b/gi, "").replace(/\bdeveloper\b/gi, "").replace(/\s+/g, " ").trim() || "Driver";
+        const cleaned = sanitizeName(driver.name) || "Driver";
         const parts = cleaned.split(" ");
         return {
           ...driver,
@@ -475,7 +486,7 @@ export const AdminDashboard = () => {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-base font-semibold text-foreground">{alert.title}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{alert.details}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{alert.details}</p>
             </div>
             <Badge className={cn("whitespace-nowrap border", alert.severity === "critical" ? "border-rose-400/30 bg-rose-400/10 text-rose-800" : alert.severity === "high" ? "border-amber-400/30 bg-amber-400/10 text-amber-800" : "border-cyan-400/30 bg-cyan-400/10 text-cyan-800")}>
               {alert.severity}
@@ -491,7 +502,7 @@ export const AdminDashboard = () => {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-base font-semibold text-foreground">{row.shipmentId}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{row.route}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{row.route}</p>
               <p className="mt-1 text-xs text-slate-600">Warehouse: {row.warehouse}</p>
             </div>
             <Badge className={cn("whitespace-nowrap border", statusTone[row.status] || "border-border bg-muted/60 text-slate-700")}>{row.status}</Badge>
@@ -510,7 +521,7 @@ export const AdminDashboard = () => {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-base font-semibold text-foreground">{vehicle.vehicleId}</p>
-              <p className="mt-1 text-sm text-muted-foreground">Service due {formatTimestamp(vehicle.nextServiceAt)}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Service due {formatTimestamp(vehicle.nextServiceAt)}</p>
               <p className="mt-1 text-xs text-slate-600">Fuel reserve {vehicle.fuelLevel}%</p>
             </div>
             <Badge className={cn("whitespace-nowrap border", statusTone[vehicle.status] || "border-border bg-muted/60 text-slate-700")}>{vehicle.status}</Badge>
@@ -525,7 +536,7 @@ export const AdminDashboard = () => {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-base font-semibold text-foreground">{item.title}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{item.actor}</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{item.actor}</p>
               <p className="mt-2 text-sm text-slate-700">{item.description}</p>
             </div>
             <span className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600">{formatTimestamp(item.timestamp)}</span>
@@ -540,7 +551,7 @@ export const AdminDashboard = () => {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-base font-semibold text-foreground">{driver.name}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{driver.tripsCompleted} completed deliveries</p>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{driver.tripsCompleted} completed deliveries</p>
               <p className="mt-1 text-xs text-slate-600">On-time {driver.onTimeRate}% • Safety {driver.safetyScore}%</p>
             </div>
             <Badge className="whitespace-nowrap border border-border bg-background text-slate-700">{driver.status}</Badge>
@@ -572,7 +583,7 @@ export const AdminDashboard = () => {
             <div className="flex flex-wrap items-center gap-3">
               <LiveIndicator tone="cyan" className="border-cyan-300 bg-cyan-100 text-cyan-900" />
               <Badge className="border-cyan-300 bg-cyan-100 text-cyan-900 hover:bg-cyan-100">Admin Control Tower</Badge>
-              <Badge variant="secondary" className="border-white/10 bg-white/5 text-slate-100 hover:bg-white/5">
+              <Badge className="border-white/10 bg-white/5 text-slate-100 hover:bg-white/5">
                 Last sync {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
               </Badge>
             </div>
@@ -660,7 +671,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("monthlyDeliveries")}
-                className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-100 transition hover:bg-white/10"
+                className={smallButtonClasses}
               >
                 <Maximize2 className="h-3.5 w-3.5" /> View full
               </button>
@@ -681,11 +692,11 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("fleetUtilization")}
-                className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-100 transition hover:bg-white/10"
+                className={smallButtonClasses}
               >
                 <Maximize2 className="h-3.5 w-3.5" /> View full
               </button>
-              <Badge variant="secondary" className="border-white/10 bg-white/5 text-slate-100">
+              <Badge className="border-white/10 bg-white/5 text-slate-100">
                 Live
               </Badge>
             </div>
@@ -706,7 +717,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("fuelUsage")}
-                className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-100 transition hover:bg-white/10"
+                className={smallButtonClasses}
               >
                 <Maximize2 className="h-3.5 w-3.5" /> View full
               </button>
@@ -727,7 +738,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("driverPerformance")}
-                className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-100 transition hover:bg-white/10"
+                className={smallButtonClasses}
               >
                 <Maximize2 className="h-3.5 w-3.5" /> View full
               </button>
@@ -748,7 +759,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("routeEfficiency")}
-                className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-100 transition hover:bg-white/10"
+                className={smallButtonClasses}
               >
                 <Maximize2 className="h-3.5 w-3.5" /> View full
               </button>
@@ -761,8 +772,8 @@ export const AdminDashboard = () => {
         </Card>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-4">
-        <Card className="border-white/10 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/30">
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="w-full max-w-full border-white/10 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/30">
           <CardHeader className="flex min-h-[72px] items-center justify-between gap-3 pb-4">
             <CardTitle className="flex items-center gap-2 text-slate-100">
               <Bell className="h-4 w-4 text-cyan-300" /> Critical alerts
@@ -774,7 +785,7 @@ export const AdminDashboard = () => {
               const alert = derived.liveAlerts[index];
 
               return (
-                <div key={alert?.id ?? `alert-${index}`} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={alert?.id ?? `alert-${index}`} className={cardItemClasses}>
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-sm font-medium text-white">{alert?.title ?? "Monitoring in progress"}</p>
                     <span
@@ -798,7 +809,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("alerts")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                className={seeMoreButtonClasses}
               >
                 See more
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -807,12 +818,12 @@ export const AdminDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-white/10 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/30">
+        <Card className="w-full max-w-full border-white/10 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/30">
           <CardHeader className="flex min-h-[72px] items-center justify-between gap-3 pb-4">
             <CardTitle className="flex items-center gap-2 text-slate-100">
               <Truck className="h-4 w-4 text-cyan-300" /> Live shipment feed
             </CardTitle>
-            <Badge variant="secondary" className="self-center whitespace-nowrap border-white/10 bg-white/5 text-slate-100">
+            <Badge className="self-center whitespace-nowrap border-white/10 bg-white/5 text-slate-100">
               Real-time
             </Badge>
           </CardHeader>
@@ -830,7 +841,7 @@ export const AdminDashboard = () => {
                 : 0;
 
               return (
-                <div key={shipment?._id ?? `shipment-${index}`} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={shipment?._id ?? `shipment-${index}`} className={cardItemClasses}>
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-medium text-white">{shipment?.shipmentId ?? "Shipment preview"}</p>
@@ -854,7 +865,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("shipments")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                className={seeMoreButtonClasses}
               >
                 See more
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -863,7 +874,7 @@ export const AdminDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-white/10 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/30">
+        <Card className="w-full max-w-full border-white/10 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/30">
           <CardHeader className="flex min-h-[72px] items-center justify-between gap-3 pb-4">
             <CardTitle className="flex items-center gap-2 text-slate-100">
               <Wrench className="h-4 w-4 text-cyan-300" /> Maintenance warnings
@@ -875,7 +886,7 @@ export const AdminDashboard = () => {
               const vehicle = derived.maintenanceLogs[index];
 
               return (
-                <div key={vehicle?.id ?? `vehicle-${index}`} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={vehicle?.id ?? `vehicle-${index}`} className={cardItemClasses}>
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-medium text-white">{vehicle?.vehicleId ?? "Vehicle preview"}</p>
@@ -896,7 +907,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("maintenance")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                className={seeMoreButtonClasses}
               >
                 See more
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -936,7 +947,7 @@ export const AdminDashboard = () => {
                 timestamp: notifications[0]?.createdAt || new Date().toISOString(),
               },
             ] as LogisticsLog[]).map((item, index) => (
-              <div key={item.id} className="flex gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+              <div key={item.id} className={cn("flex gap-3", cardItemClasses)}>
                 <div className={cn("mt-1 h-2.5 w-2.5 rounded-full", index === 0 ? "bg-cyan-400" : index === 1 ? "bg-amber-400" : "bg-emerald-400")} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-3">
@@ -952,7 +963,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("activity")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                className={seeMoreButtonClasses}
               >
                 See more
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -973,7 +984,7 @@ export const AdminDashboard = () => {
           <CardContent className="space-y-4 overflow-x-auto">
             <table className="min-w-full table-auto text-sm">
               <thead>
-                <tr className="text-left text-xs uppercase tracking-[0.24em] text-muted-foreground">
+                <tr className="text-left text-xs uppercase tracking-[0.24em] text-slate-600 dark:text-slate-400">
                   <th className="px-3 py-2">Shipment</th>
                   <th className="px-3 py-2">Route</th>
                   <th className="px-3 py-2">Status</th>
@@ -986,9 +997,9 @@ export const AdminDashboard = () => {
                   <tr key={row.id} className="rounded-2xl border border-border bg-card/60">
                     <td className="px-3 py-3">
                       <div className="text-sm font-semibold text-foreground">{row.shipmentId}</div>
-                      <div className="text-xs text-muted-foreground">{row.warehouse}</div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400">{row.warehouse}</div>
                     </td>
-                    <td className="px-3 py-3 text-sm text-muted-foreground">{row.route}</td>
+                    <td className="px-3 py-3 text-sm text-slate-600 dark:text-slate-400">{row.route}</td>
                     <td className="px-3 py-3">
                       <Badge className={cn("border", row.status ? statusTone[row.status] || "border-border bg-muted/60 text-foreground" : "border-border bg-muted/60 text-foreground")}>
                         {row.status}
@@ -999,7 +1010,7 @@ export const AdminDashboard = () => {
                         <div className="h-full rounded-full bg-cyan-400" style={{ width: `${row.progress}%` }} />
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-sm text-muted-foreground">{row.eta ? formatTimestamp(row.eta) : "--"}</td>
+                    <td className="px-3 py-3 text-sm text-slate-600 dark:text-slate-400">{row.eta ? formatTimestamp(row.eta) : "--"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -1021,11 +1032,11 @@ export const AdminDashboard = () => {
                       { title: "Oil replacement scheduled", vehicle: "VAN-118", meta: "Due tomorrow", status: "Scheduled", tone: "amber" },
                       { title: "Tire pressure alert resolved", vehicle: "TRK-391", meta: "Resolved 2h ago", status: "Closed", tone: "cyan" },
                     ].map((item) => (
-                      <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                      <div key={item.title} className={cardItemClasses}>
                         <div className="flex items-center justify-between gap-3">
                           <div>
                             <p className="text-sm font-semibold text-foreground">{item.title}</p>
-                            <p className="text-xs font-medium text-muted-foreground">{item.vehicle} • {item.meta}</p>
+                            <p className="text-xs font-medium text-slate-600 dark:text-slate-400">{item.vehicle} • {item.meta}</p>
                           </div>
                           <span className={cn("rounded-full border px-2 py-1 text-[10px] uppercase tracking-[0.24em]", item.tone === "emerald" ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-700" : item.tone === "amber" ? "border-amber-400/20 bg-amber-400/10 text-amber-700" : "border-cyan-400/20 bg-cyan-400/10 text-cyan-700")}>
                             {item.status}
@@ -1037,7 +1048,7 @@ export const AdminDashboard = () => {
                       <button
                         type="button"
                         onClick={() => setActiveView("drivers")}
-                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                        className={seeMoreButtonClasses}
                       >
                         See more
                         <ArrowRight className="h-3.5 w-3.5" />
@@ -1065,7 +1076,7 @@ export const AdminDashboard = () => {
                       const statusLabel = index === 0 ? "Elite" : index === 1 ? "Reliable" : "Efficient";
 
                       return (
-                        <div key={driver.id} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
+                        <div key={driver.id} className={cn("flex items-center gap-3", cardItemClasses)}>
                           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-cyan-700 text-base font-bold text-white">
                               {initials}
                             </div>
@@ -1073,13 +1084,13 @@ export const AdminDashboard = () => {
                             <div className="flex items-center justify-between gap-3">
                               <div className="min-w-0">
                                 <p className="truncate text-sm font-semibold text-foreground">{driver.name}</p>
-                                <p className="text-xs font-medium text-muted-foreground">{driver.tripsCompleted} completed deliveries</p>
+                                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">{driver.tripsCompleted} completed deliveries</p>
                               </div>
                               <span className="rounded-full border border-transparent bg-cyan-700 px-2 py-1 text-[10px] uppercase tracking-[0.24em] text-white font-semibold">
                                 {statusLabel}
                               </span>
                             </div>
-                            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground">
+                            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400">
                               <span className="rounded-full border border-border bg-background px-2 py-1">Score {deliveryScore}%</span>
                               <span className="rounded-full border border-border bg-background px-2 py-1">On-time {driver.onTimeRate}%</span>
                             </div>
@@ -1090,7 +1101,7 @@ export const AdminDashboard = () => {
                     <div className="flex items-center justify-end border-t border-white/10 pt-3">
                       <button
                         type="button"
-                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                        className={seeMoreButtonClasses}
                       >
                         See more
                         <ArrowRight className="h-3.5 w-3.5" />
@@ -1121,7 +1132,7 @@ export const AdminDashboard = () => {
               <button
                 type="button"
                 onClick={() => setActiveView("insights")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-100 transition hover:bg-white/10"
+                className={seeMoreButtonClasses}
               >
                 See more
                 <ArrowRight className="h-3.5 w-3.5" />

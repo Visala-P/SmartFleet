@@ -14,6 +14,20 @@ const startServer = async () => {
 
   await connectDB();
 
+  // Create a local dev admin user if none exist (development only).
+  if (config.nodeEnv !== "production") {
+    try {
+      const User = require("./models/User");
+      const existing = await User.findOne({ role: "Admin" });
+      if (!existing) {
+        await User.create({ name: "Admin", email: "admin@smartfleet.com", password: "admin123", role: "Admin" });
+        console.log("Created local dev admin: admin@smartfleet.com / admin123");
+      }
+    } catch (err) {
+      console.warn("Dev user creation failed:", err.message || err);
+    }
+  }
+
   const app = express();
 
   app.use(

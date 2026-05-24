@@ -10,7 +10,6 @@ import {
   PackageOpen,
   Route,
   Settings2,
-  ShieldAlert,
   Truck,
   Users2,
   Wrench,

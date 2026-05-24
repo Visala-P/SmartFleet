@@ -141,7 +141,7 @@ export const SidebarLayout = ({
         <div className={cn("mt-5 flex items-center justify-between rounded-2xl border border-border bg-muted/60 px-3 py-3", collapsed ? "md:hidden lg:hidden" : "")}> 
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-foreground">{userName}</p>
-            {userName !== role ? <p className="truncate text-xs font-semibold text-muted-foreground">{role}</p> : null}
+            {userName !== role ? <p className="truncate text-xs font-semibold text-slate-600 dark:text-slate-400">{role}</p> : null}
           </div>
           <LiveIndicator compact tone="cyan" className="border-cyan-300 bg-cyan-100 text-cyan-900" />
         </div>
@@ -184,7 +184,7 @@ export const SidebarLayout = ({
 
             <div className="mt-5 rounded-2xl border border-border bg-muted/60 p-3">
               <p className="text-sm font-semibold text-foreground">{userName}</p>
-              {userName !== role ? <p className="text-xs font-semibold text-muted-foreground">{role}</p> : null}
+              {userName !== role ? <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">{role}</p> : null}
             </div>
 
             <nav className="mt-6 space-y-2">{navigationItems}</nav>
@@ -227,19 +227,19 @@ export const SidebarLayout = ({
               </button>
               <div className="min-w-0">
                 <p className="truncate text-lg font-semibold text-foreground">{title}</p>
-                {subtitle ? <p className="truncate text-xs font-medium uppercase tracking-[0.24em] text-muted-foreground">{subtitle}</p> : null}
+                {subtitle ? <p className="truncate text-xs font-medium uppercase tracking-[0.24em] text-slate-600 dark:text-slate-400">{subtitle}</p> : null}
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="hidden items-center gap-2 rounded-full border border-border bg-muted px-3 py-2 text-xs font-medium text-muted-foreground sm:flex">
+              <div className="hidden items-center gap-2 rounded-full border border-border bg-muted px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 sm:flex">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.8)]" />
                 Connected
               </div>
               <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
               <div className="hidden rounded-xl border border-border bg-card px-3 py-2 text-right sm:block">
                 <p className="text-sm font-semibold text-foreground">{userName}</p>
-                {userName !== role ? <p className="text-xs font-medium text-muted-foreground">{role}</p> : null}
+                {userName !== role ? <p className="text-xs font-medium text-slate-600 dark:text-slate-400">{role}</p> : null}
               </div>
             </div>
           </div>

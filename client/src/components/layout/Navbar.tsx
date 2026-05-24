@@ -51,7 +51,7 @@ export const Navbar = ({ title, userName, role, onOpenSidebar }: NavbarProps) =>
         </motion.button>
         <div className="hidden rounded-lg border border-border px-3 py-2 text-right sm:block">
           <p className="text-sm font-medium">{userName}</p>
-          <p className="text-xs text-muted-foreground">{role}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{role}</p>
         </div>
       </div>
     </header>

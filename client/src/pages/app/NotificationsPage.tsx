@@ -30,7 +30,7 @@ export const NotificationsPage = () => {
         <CardContent className="flex flex-col gap-3 p-4 md:flex-row md:items-center">
           <div>
             <p className="text-sm font-semibold">Notification Center</p>
-            <p className="text-xs text-muted-foreground">Unread alerts refresh automatically from operations.</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400">Unread alerts refresh automatically from operations.</p>
           </div>
           <div className="md:ml-auto flex items-center gap-2">
             <Badge>{unreadCount} unread</Badge>
@@ -55,8 +55,8 @@ export const NotificationsPage = () => {
                   <Badge>{item.type}</Badge>
                   {!item.isReadBy.length ? <Badge className="bg-cyan-500/15 text-cyan-300">Unread</Badge> : null}
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">{item.message}</p>
-                <p className="mt-2 text-xs text-muted-foreground">{new Date(item.createdAt).toLocaleString()}</p>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{item.message}</p>
+                <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">{new Date(item.createdAt).toLocaleString()}</p>
               </div>
               <Button variant="secondary" onClick={() => markNotificationRead(item._id)}>
                 {item.isReadBy.length ? "Marked" : "Mark as read"}

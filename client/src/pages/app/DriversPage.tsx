@@ -102,7 +102,7 @@ export const DriversPage = () => {
             </div>
             <div>
               <p className="font-medium">{item.name}</p>
-              <p className="text-xs text-muted-foreground">{item.employeeId}</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">{item.employeeId}</p>
             </div>
           </div>
         ),
@@ -166,11 +166,11 @@ export const DriversPage = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold">{driver.name}</p>
-                  <p className="text-xs text-muted-foreground">{driver.employeeId}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{driver.employeeId}</p>
                 </div>
                 <Badge className={statusColors[driver.availabilityStatus]}>{driver.availabilityStatus}</Badge>
               </div>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-muted-foreground">
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-slate-600 dark:text-slate-400">
                 <div>
                   <p className="font-semibold text-foreground">{driver.completedTrips}</p>
                   Trips

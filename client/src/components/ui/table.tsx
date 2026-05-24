@@ -16,7 +16,7 @@ export const TRow = ({ className, ...props }: HTMLAttributes<HTMLTableRowElement
 );
 
 export const TH = ({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) => (
-  <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground", className)} {...props} />
+  <th className={cn("px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400", className)} {...props} />
 );
 
 export const TD = ({ className, ...props }: TdHTMLAttributes<HTMLTableCellElement>) => (

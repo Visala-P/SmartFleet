@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent} from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
@@ -33,7 +33,7 @@ const statusProgress: Record<Shipment["status"], number> = {
 };
 
 export const ShipmentsPage = () => {
-  const { shipments, vehicles, drivers, createShipment, updateShipment, deleteShipment } = useSmartFleetSimulation();
+  const { shipments, createShipment, updateShipment, deleteShipment } = useSmartFleetSimulation();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<Shipment["status"] | "">("");
   const [priorityFilter, setPriorityFilter] = useState<Shipment["priority"] | "">("");
@@ -116,7 +116,7 @@ export const ShipmentsPage = () => {
             <div className="h-2 overflow-hidden rounded-full bg-muted">
               <div className="h-full rounded-full bg-cyan-400 transition-all duration-500" style={{ width: `${statusProgress[item.status]}%` }} />
             </div>
-            <p className="text-xs text-muted-foreground">{statusProgress[item.status]}%</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400">{statusProgress[item.status]}%</p>
           </div>
         ),
       },
@@ -173,7 +173,7 @@ export const ShipmentsPage = () => {
         {statuses.map((status) => (
           <Card key={status}>
             <CardContent className="p-4">
-              <p className="text-sm text-muted-foreground">{status}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{status}</p>
               <p className="mt-2 text-3xl font-semibold">{shipments.filter((item) => item.status === status).length}</p>
             </CardContent>
           </Card>
@@ -228,16 +228,16 @@ export const ShipmentsPage = () => {
             <div className="grid gap-3 md:grid-cols-2">
               <Card>
                 <CardContent className="p-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Route</p>
+                  <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Route</p>
                   <p className="mt-2 font-semibold">{selected.origin}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">to {selected.destination}</p>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">to {selected.destination}</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardContent className="p-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Assigned Resources</p>
+                  <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Assigned Resources</p>
                   <p className="mt-2 font-semibold">{selected.vehicle?.vehicleNumber || "No vehicle assigned"}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{selected.driver?.name || "No driver assigned"}</p>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{selected.driver?.name || "No driver assigned"}</p>
                 </CardContent>
               </Card>
             </div>
@@ -253,12 +253,12 @@ export const ShipmentsPage = () => {
             </div>
 
             <div className="space-y-3 border-l border-border pl-4">
-              {selected.timeline.map((event, index) => (
+              {selected.timeline?.map((event: NonNullable<Shipment["timeline"]>[number], index: number) => (
                 <div key={index} className="relative">
                   <span className="absolute -left-[22px] mt-1 h-2 w-2 rounded-full bg-primary" />
                   <p className="text-sm font-medium">{event.label}</p>
-                  <p className="text-xs text-muted-foreground">{new Date(event.timestamp).toLocaleString()}</p>
-                  <p className="text-xs text-muted-foreground">{event.note}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{new Date(event.timestamp).toLocaleString()}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{event.note}</p>
                 </div>
               ))}
             </div>

@@ -117,7 +117,7 @@ export const FleetPage = () => {
             <div className="h-2 overflow-hidden rounded-full bg-muted">
               <div className="h-full rounded-full bg-cyan-400" style={{ width: `${item.fuelLevel ?? 65}%` }} />
             </div>
-            <p className="text-xs text-muted-foreground">{item.fuelLevel ?? 65}%</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400">{item.fuelLevel ?? 65}%</p>
           </div>
         ),
       },
@@ -193,11 +193,11 @@ export const FleetPage = () => {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="font-semibold">{vehicle.vehicleNumber}</p>
-                  <p className="text-xs text-muted-foreground">{vehicle.type}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{vehicle.type}</p>
                 </div>
                 <Badge>Maintenance</Badge>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
                 Service due on {new Date(vehicle.nextServiceDate).toLocaleDateString()}.
               </p>
             </CardContent>

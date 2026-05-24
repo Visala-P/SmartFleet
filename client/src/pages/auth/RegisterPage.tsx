@@ -64,17 +64,17 @@ export const SignupPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center px-4 text-foreground">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center gap-3 text-center">
           <img src={logoSrc} alt="SmartFleet" className="h-14 w-auto object-contain" />
-          <p className="text-base font-semibold uppercase tracking-[0.36em] text-cyan-100/75">SMART FLEET</p>
+          <p className="text-base font-semibold uppercase tracking-[0.36em] text-cyan-700 dark:text-cyan-100/75">SMART FLEET</p>
         </div>
-        <Card>
+        <Card className="border-border/70 bg-card/95 text-foreground shadow-2xl">
           <CardContent className="space-y-4 p-7">
             <div className="text-center">
-              <h1 className="text-2xl font-bold">Create SmartFleet Account</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Sign up with your company email to continue.</p>
+              <h1 className="text-2xl font-bold text-foreground">Create SmartFleet Account</h1>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Sign up with your company email to continue.</p>
             </div>
 
             <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
@@ -117,8 +117,8 @@ export const SignupPage = () => {
               </Button>
             </form>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Already have an account? <Link to="/login" className="text-primary">Sign in</Link>
+            <p className="text-center text-sm text-slate-600 dark:text-slate-400">
+              Already have an account? <Link to="/login" className="font-semibold text-primary underline-offset-4 hover:underline">Sign in</Link>
             </p>
           </CardContent>
         </Card>

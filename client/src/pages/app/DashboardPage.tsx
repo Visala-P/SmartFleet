@@ -67,7 +67,7 @@ export const DashboardPage = () => {
       <section className="grid gap-4 xl:grid-cols-5">
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">
               <span>Risk Score</span>
               <ShieldAlert className="h-4 w-4" />
             </div>
@@ -79,7 +79,7 @@ export const DashboardPage = () => {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">
               <span>Delivery Efficiency</span>
               <Gauge className="h-4 w-4" />
             </div>
@@ -91,7 +91,7 @@ export const DashboardPage = () => {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">
               <span>Fleet Health</span>
               <Wrench className="h-4 w-4" />
             </div>
@@ -103,7 +103,7 @@ export const DashboardPage = () => {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">
               <span>Route Score</span>
               <Route className="h-4 w-4" />
             </div>
@@ -115,12 +115,12 @@ export const DashboardPage = () => {
         </Card>
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-muted-foreground">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">
               <span>Predicted Delays</span>
               <Timer className="h-4 w-4" />
             </div>
             <p className="mt-4 text-3xl font-semibold">{smartInsights.predictedDelays}</p>
-            <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
               <ArrowRight className="h-4 w-4" />
               Heuristic risk estimate
             </div>
@@ -142,7 +142,7 @@ export const DashboardPage = () => {
               { title: "Maintenance alert", body: smartInsights.maintenanceNote, tone: "border-amber-400/20 bg-amber-400/10" },
             ].map((item) => (
               <div key={item.title} className={`rounded-2xl border p-4 ${item.tone}`}>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{item.title}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">{item.title}</p>
                 <p className="mt-2 text-sm leading-6">{item.body}</p>
               </div>
             ))}
@@ -161,7 +161,7 @@ export const DashboardPage = () => {
               { query: "Fuel alerts", response: smartInsights.fuelInsight },
             ].map((item) => (
               <div key={item.query} className="rounded-xl border border-border/70 p-3">
-                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">{item.query}</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">{item.query}</p>
                 <p className="mt-2 text-sm">{item.response}</p>
               </div>
             ))}
@@ -182,7 +182,7 @@ export const DashboardPage = () => {
         <Card className="xl:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <CardTitle>Deliveries Trend</CardTitle>
-            <Badge variant="secondary">Live</Badge>
+            <Badge className="bg-slate-200 text-slate-700">Live</Badge>
           </CardHeader>
           <CardContent className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -231,8 +231,8 @@ export const DashboardPage = () => {
                   <p className="font-medium">{shipment.shipmentId}</p>
                   <Badge>{shipment.status}</Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">{shipment.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-sm text-slate-600 dark:text-slate-400">{shipment.title}</p>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
                   {shipment.origin} → {shipment.destination}
                 </p>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
@@ -266,7 +266,7 @@ export const DashboardPage = () => {
                   <p className="text-sm font-medium">{item.title}</p>
                   <Badge>{item.type}</Badge>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">{item.message}</p>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">{item.message}</p>
               </div>
             ))}
           </CardContent>

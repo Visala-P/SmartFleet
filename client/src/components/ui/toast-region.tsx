@@ -25,7 +25,7 @@ export const ToastRegion = () => {
             exit={{ opacity: 0, x: 20 }}
           >
             <p className="text-sm font-semibold text-foreground">{toast.title}</p>
-            {toast.description ? <p className="mt-1 text-xs text-muted-foreground">{toast.description}</p> : null}
+            {toast.description ? <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">{toast.description}</p> : null}
           </motion.button>
         ))}
       </AnimatePresence>

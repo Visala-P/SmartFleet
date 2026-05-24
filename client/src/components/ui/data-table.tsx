@@ -71,7 +71,7 @@ export const DataTable = <T,>({
         <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           Page {page} of {totalPages || 1}
         </p>
         <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>

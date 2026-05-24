@@ -42,7 +42,7 @@ export const VehicleDrawer = ({ open, vehicle, onClose }: VehicleDrawerProps) =>
           >
             <div className="flex items-center justify-between border-b border-border/70 px-5 py-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Vehicle details</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Vehicle details</p>
                 <h3 className="text-lg font-semibold">{vehicle.vehicleNumber}</h3>
               </div>
               <Button variant="ghost" size="sm" onClick={onClose} type="button">
@@ -54,19 +54,19 @@ export const VehicleDrawer = ({ open, vehicle, onClose }: VehicleDrawerProps) =>
               <Card>
                 <CardContent className="grid gap-3 p-4 sm:grid-cols-2">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Type</p>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Type</p>
                     <p className="mt-1 font-semibold">{vehicle.type}</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Status</p>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Status</p>
                     <Badge className="mt-1">{vehicle.status}</Badge>
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Driver</p>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Driver</p>
                     <p className="mt-1 font-semibold">{vehicle.driverAssigned?.name || "Not assigned"}</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Capacity</p>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Capacity</p>
                     <p className="mt-1 font-semibold">{vehicle.capacity.toLocaleString()} kg</p>
                   </div>
                 </CardContent>
@@ -75,7 +75,7 @@ export const VehicleDrawer = ({ open, vehicle, onClose }: VehicleDrawerProps) =>
               <div className="grid gap-3 sm:grid-cols-3">
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 text-muted-foreground">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                       <Fuel className="h-4 w-4" />
                       <span className="text-xs uppercase tracking-[0.22em]">Fuel</span>
                     </div>
@@ -84,7 +84,7 @@ export const VehicleDrawer = ({ open, vehicle, onClose }: VehicleDrawerProps) =>
                 </Card>
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 text-muted-foreground">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                       <Wrench className="h-4 w-4" />
                       <span className="text-xs uppercase tracking-[0.22em]">Risk</span>
                     </div>
@@ -93,7 +93,7 @@ export const VehicleDrawer = ({ open, vehicle, onClose }: VehicleDrawerProps) =>
                 </Card>
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 text-muted-foreground">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                       <CalendarDays className="h-4 w-4" />
                       <span className="text-xs uppercase tracking-[0.22em]">Next service</span>
                     </div>
@@ -104,8 +104,8 @@ export const VehicleDrawer = ({ open, vehicle, onClose }: VehicleDrawerProps) =>
 
               <Card>
                 <CardContent className="p-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Smart insight</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Smart insight</p>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                     {vehicle.fuelLevel && vehicle.fuelLevel < 20
                       ? `${vehicle.vehicleNumber} has critically low fuel for the next route.`
                       : vehicle.status === "Maintenance"

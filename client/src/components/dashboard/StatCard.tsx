@@ -24,7 +24,7 @@ export const StatCard = ({
       </CardHeader>
       <CardContent>
         <p className="text-3xl font-bold">{value}</p>
-        <p className="mt-2 text-xs text-muted-foreground">{hint}</p>
+        <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">{hint}</p>
       </CardContent>
     </Card>
   </motion.div>

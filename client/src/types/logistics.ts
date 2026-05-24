@@ -20,7 +20,7 @@ export interface LogisticsAlert {
   id: string;
   title: string;
   details: string;
-  severity: LogisticsSeverity;
+  severity: "low" | "medium" | "high" | "critical";
   createdAt: string;
   acknowledged: boolean;
 }

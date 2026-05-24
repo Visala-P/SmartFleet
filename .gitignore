@@ -2,8 +2,14 @@ node_modules/
 dist/
 .env
 .env.*
+
 !.env.example
 coverage/
 .DS_Store
 *.log
 .vscode/
+client/.env
+server/.env
+node_modules
+dist
+

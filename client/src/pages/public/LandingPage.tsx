@@ -12,7 +12,7 @@ export const LandingPage = () => {
     {
       title: "Live route visibility",
       icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 text-cyan-200">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 stroke-[2.4] text-cyan-200">
           <path
             d="M12 21s6-4.35 6-10a6 6 0 10-12 0c0 5.65 6 10 6 10z"
             fill="none"
@@ -26,7 +26,7 @@ export const LandingPage = () => {
     {
       title: "Fleet analytics in real time",
       icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 text-cyan-200">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 stroke-[2.8] text-cyan-700 dark:text-cyan-300">
           <path d="M5 19V9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
           <path d="M11 19V5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
           <path d="M17 19V13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -36,7 +36,7 @@ export const LandingPage = () => {
     {
       title: "Manufacturing logistics control",
       icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 text-cyan-200">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 stroke-[2.8] text-cyan-700 dark:text-cyan-300">
           <path
             d="M3 10h11v8H3zM14 13h4l3 3v2h-7z"
             fill="none"
@@ -52,7 +52,7 @@ export const LandingPage = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <div className="relative min-h-screen overflow-hidden bg-background text-slate-900 dark:text-white">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-[-14%] top-[-18%] h-[34rem] w-[34rem] rounded-full bg-cyan-500/14 blur-3xl" />
         <div className="absolute right-[-12%] top-[12%] h-[28rem] w-[28rem] rounded-full bg-blue-500/10 blur-3xl" />
@@ -78,7 +78,7 @@ export const LandingPage = () => {
             <>
               <Link
                 to="/signup"
-                className="rounded-full border border-border bg-muted/60 px-4 py-2 text-sm font-medium text-foreground transition hover:border-cyan-300/40 hover:bg-muted"
+                className="rounded-full border border-border bg-muted/60 px-4 py-2 text-sm font-medium text-slate-900 dark:text-white transition hover:border-cyan-300/40 hover:bg-muted"
               >
                 Sign Up
               </Link>
@@ -102,16 +102,15 @@ export const LandingPage = () => {
             className="grid w-full items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]"
           >
             <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-100/80">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_6px_rgba(52,211,153,0.12)]" />
+<div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-300 bg-cyan-100 dark:bg-cyan-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-cyan-700 dark:text-cyan-200">                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_6px_rgba(52,211,153,0.12)]" />
                 System status: operational
               </div>
 
-              <h1 className="max-w-2xl text-3xl font-extrabold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-2xl text-3xl font-extrabold leading-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl">
                 <span className="block">SmartFleet Transport</span>
                 <span className="block">Management</span>
               </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-8 text-muted-foreground sm:text-base lg:text-lg">
+              <p className="mt-4 max-w-2xl text-sm leading-8 text-slate-700 dark:text-slate-400 font-medium sm:text-base lg:text-lg">
                 Internal operations portal for manufacturing and logistics teams. Authenticate to track vehicles, schedule deliveries, monitor fuel usage, and manage fleet dispatches.
               </p>
 
@@ -126,17 +125,16 @@ export const LandingPage = () => {
             </div>
 
             <div className="flex justify-center lg:justify-end">
-              <div className="w-full max-w-md rounded-[28px] border border-border bg-card/80 p-3 shadow-[0_12px_32px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:p-4 lg:mt-10">
+              <div className="w-full max-w-md rounded-[28px] border border-border bg-white dark:bg-slate-900/80 p-3 shadow-[0_12px_32px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:p-4 lg:mt-10">
                 <div className="grid gap-3">
                   {featureItems.map((item) => (
                     <div
                       key={item.title}
                       className="flex flex-row items-center justify-start gap-4 rounded-[20px] border border-border bg-muted/60 px-4 py-4 text-left shadow-none"
                     >
-                      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-cyan-500/10 text-cyan-600">
-                        {item.icon}
+<div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-cyan-100 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-300">                        {item.icon}
                       </div>
-                      <p className="min-w-0 text-[15px] font-semibold leading-snug text-foreground sm:text-base">
+                      <p className="min-w-0 text-[15px] font-semibold leading-snug text-slate-900 dark:text-white sm:text-base">
                         {item.title}
                       </p>
                     </div>

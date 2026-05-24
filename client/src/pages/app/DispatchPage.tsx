@@ -7,13 +7,51 @@ export const DispatchPage = () => {
   const { shipments, vehicles, drivers, updateShipment, updateVehicle } = useSmartFleetSimulation();
   const pending = useMemo(() => shipments.filter((s) => s.status === "Pending"), [shipments]);
   const [assigning, setAssigning] = useState<string | null>(null);
+const handleAssign = (
+  shipmentId: string,
+  vehicleId: string,
+  driverId?: string
+) => {
+  setAssigning(shipmentId);
 
-  const handleAssign = (shipmentId: string, vehicleId: string, driverId?: string) => {
-    setAssigning(shipmentId);
-    updateShipment(shipmentId, { vehicle: vehicles.find((v) => v._id === vehicleId) ? { _id: vehicleId, vehicleNumber: vehicles.find((v) => v._id === vehicleId)!.vehicleNumber } : undefined, driver: driverId ? { _id: driverId, name: drivers.find((d) => d._id === driverId)!.name } : undefined, status: "In Transit" });
-    updateVehicle(vehicleId, { status: "In Transit", driverAssigned: drivers.find((d) => d._id === driverId) ? { _id: driverId, name: drivers.find((d) => d._id === driverId)!.name, employeeId: drivers.find((d) => d._id === driverId)!.employeeId } : undefined });
-    setTimeout(() => setAssigning(null), 600);
-  };
+  const selectedVehicle = vehicles.find((v) => v._id === vehicleId);
+
+  const selectedDriver = driverId
+    ? drivers.find((d) => d._id === driverId)
+    : undefined;
+
+  updateShipment(shipmentId, {
+    vehicle: selectedVehicle
+      ? {
+          _id: selectedVehicle._id,
+          vehicleNumber: selectedVehicle.vehicleNumber,
+        }
+      : undefined,
+
+    driver: selectedDriver
+      ? {
+          _id: selectedDriver._id,
+          name: selectedDriver.name,
+        }
+      : undefined,
+
+    status: "In Transit",
+  });
+
+  updateVehicle(vehicleId, {
+    status: "In Transit",
+
+    driverAssigned: selectedDriver
+      ? {
+          _id: selectedDriver._id,
+          name: selectedDriver.name,
+          employeeId: selectedDriver.employeeId,
+        }
+      : undefined,
+  });
+
+  setTimeout(() => setAssigning(null), 600);
+};
 
   return (
     <div className="space-y-6">
@@ -25,7 +63,7 @@ export const DispatchPage = () => {
               <CardTitle>{s.shipmentId} — {s.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{s.origin} → {s.destination}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">{s.origin} → {s.destination}</p>
               <div className="relative z-10 mt-3 flex flex-wrap items-center gap-3 overflow-visible">
                 <select className="rounded-md border border-input bg-background p-2 text-sm text-foreground shadow-sm" defaultValue={vehicles.find((v) => v.status === "Available")?._id || ""}>
                   {vehicles.map((v) => (

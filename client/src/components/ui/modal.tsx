@@ -53,7 +53,7 @@ export const Modal = ({ open, title, onClose, children, fullscreen }: ModalProps
               transition={{ type: "spring", stiffness: 320, damping: 28 }}
               onMouseDown={(event) => event.stopPropagation()}
             >
-              <div className="flex items-center justify-between border-b border-border/60 px-5 py-4">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 px-5 py-4">
                 <h3 className="text-lg font-semibold text-foreground">{title}</h3>
                 <Button variant="ghost" onClick={onClose} type="button">
                   Close

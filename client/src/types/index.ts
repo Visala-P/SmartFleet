@@ -1,11 +1,66 @@
-export type UserRole = "Admin" | "Transport Manager" | "Driver" | "Warehouse Staff";
+export type AuthRole = "admin" | "transport_manager" | "warehouse_staff" | "driver";
+export type UserRole = "Admin" | "Transport Manager" | "Warehouse Staff" | "Driver";
+
+export const AUTH_ROLES: AuthRole[] = ["admin", "transport_manager", "warehouse_staff", "driver"];
+
+export const AUTH_ROLE_LABELS: Record<AuthRole, UserRole> = {
+  admin: "Admin",
+  transport_manager: "Transport Manager",
+  warehouse_staff: "Warehouse Staff",
+  driver: "Driver",
+};
+
+export const LEGACY_ROLE_TO_AUTH_ROLE: Record<UserRole, AuthRole> = {
+  Admin: "admin",
+  "Transport Manager": "transport_manager",
+  "Warehouse Staff": "warehouse_staff",
+  Driver: "driver",
+};
+
+export const AUTH_STORAGE_KEY = "smartfleet_auth_session";
+export const AUTH_TOKEN_STORAGE_KEY = "smartfleet_auth_token";
+export const AUTH_USER_STORAGE_KEY = "smartfleet_auth_user";
+export const AUTH_ROLE_STORAGE_KEY = "smartfleet_auth_role";
+export const LEGACY_AUTH_ROLE_STORAGE_KEY = "smartfleet_role";
+
+export const DEMO_CREDENTIALS = {
+  admin: {
+    email: "admin@smartfleet.com",
+    password: "admin123",
+    role: "admin" as const,
+  },
+  transport_manager: {
+    email: "manager@smartfleet.com",
+    password: "manager123",
+    role: "transport_manager" as const,
+  },
+  warehouse_staff: {
+    email: "warehouse@smartfleet.com",
+    password: "warehouse123",
+    role: "warehouse_staff" as const,
+  },
+  driver: {
+    email: "driver@smartfleet.com",
+    password: "driver123",
+    role: "driver" as const,
+  },
+} as const;
+
+export type DemoCredentialRole = keyof typeof DEMO_CREDENTIALS;
 
 export interface AuthUser {
   id: string;
   name: string;
   email: string;
   role: UserRole;
+  rbacRole?: AuthRole;
   isActive: boolean;
+}
+
+export interface AuthSession {
+  user: AuthUser;
+  token: string;
+  rbacRole: AuthRole;
 }
 
 export interface Vehicle {
@@ -49,6 +104,11 @@ export interface Shipment {
   scheduledPickup: string;
   estimatedDelivery: string;
   deliveredAt?: string;
+  timeline?: {
+    label: string;
+    timestamp: Date;
+    note?: string;
+  }[];
 }
 
 export interface NotificationItem {
@@ -60,3 +120,24 @@ export interface NotificationItem {
   isReadBy: string[];
   createdAt: string;
 }
+
+export const isAuthRole = (value: string | null | undefined): value is AuthRole =>
+  value === "admin" || value === "transport_manager" || value === "warehouse_staff" || value === "driver";
+
+export const isUserRole = (value: string | null | undefined): value is UserRole =>
+  value === "Admin" || value === "Transport Manager" || value === "Warehouse Staff" || value === "Driver";
+
+export const normalizeRoleLabel = (role: AuthRole | UserRole): UserRole => {
+  if (role === "admin") return "Admin";
+  if (role === "transport_manager") return "Transport Manager";
+  if (role === "warehouse_staff") return "Warehouse Staff";
+  if (role === "driver") return "Driver";
+  return role;
+};
+
+export const normalizeAuthRole = (role: AuthRole | UserRole | null | undefined): AuthRole | null => {
+  if (!role) return null;
+  if (isAuthRole(role)) return role;
+  if (isUserRole(role)) return LEGACY_ROLE_TO_AUTH_ROLE[role];
+  return null;
+};

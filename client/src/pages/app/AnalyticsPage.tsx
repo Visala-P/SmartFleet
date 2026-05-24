@@ -14,7 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Activity, Fuel, Gauge, ShieldAlert, Users2, Warehouse } from "lucide-react";
+import { Activity, Fuel, Gauge, ShieldAlert, Truck, Users2, Warehouse } from "lucide-react";
 
 import { StatCard } from "@/components/dashboard/StatCard";
 import { Badge } from "@/components/ui/badge";
@@ -82,23 +82,23 @@ const AdminAnalytics = ({ range }: { range: (typeof DATE_FILTERS)[number] }) => 
         <Card className="xl:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <CardTitle>Operations overview</CardTitle>
-            <Badge variant="secondary">Global</Badge>
+           <Badge className="bg-slate-200 text-slate-700">Global</Badge>
           </CardHeader>
           <CardContent className="grid gap-3 md:grid-cols-3">
             <div className="rounded-2xl border border-border/70 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Revenue posture</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Revenue posture</p>
               <p className="mt-2 text-2xl font-semibold">Stable</p>
-              <p className="mt-2 text-sm text-muted-foreground">Operational load sits at {operationalLoad}% of current capacity.</p>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Operational load sits at {operationalLoad}% of current capacity.</p>
             </div>
             <div className="rounded-2xl border border-border/70 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">System alerts</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">System alerts</p>
               <p className="mt-2 text-2xl font-semibold">{systemAlerts}</p>
-              <p className="mt-2 text-sm text-muted-foreground">Delays and maintenance warnings combined.</p>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Delays and maintenance warnings combined.</p>
             </div>
             <div className="rounded-2xl border border-border/70 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Warehouse score</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Warehouse score</p>
               <p className="mt-2 text-2xl font-semibold">{warehouseEfficiency}%</p>
-              <p className="mt-2 text-sm text-muted-foreground">Inbound and outbound flow remain within target.</p>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Inbound and outbound flow remain within target.</p>
             </div>
           </CardContent>
         </Card>
@@ -255,7 +255,7 @@ const TransportManagerAnalytics = ({ range }: { range: (typeof DATE_FILTERS)[num
         <CardContent className="flex flex-col gap-3 p-4 md:flex-row md:items-center">
           <div>
             <p className="text-sm font-semibold">Analytics Window</p>
-            <p className="text-xs text-muted-foreground">Transport control metrics tuned for dispatch and route execution</p>
+            <p className="text-xs text-slate-600 dark:text-slate-400">Transport control metrics tuned for dispatch and route execution</p>
           </div>
           <div className="md:ml-auto">
             <select className="h-10 rounded-lg border border-input bg-background px-3 text-sm" value={range} disabled>
@@ -270,12 +270,12 @@ const TransportManagerAnalytics = ({ range }: { range: (typeof DATE_FILTERS)[num
       </Card>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        <StatCard title="Route Efficiency" value={`${Math.max(60, Math.round(routeEfficiency.reduce((sum, item) => sum + item.value, 0) / Math.max(1, routeEfficiency.length)))}%`} hint="Planned vs executed routes" icon={undefined as never} />
-        <StatCard title="Active Deliveries" value={activeDeliveries.length} hint="On-road and queued" icon={undefined as never} />
-        <StatCard title="Delayed Shipments" value={delayedShipments.length} hint="Needs re-routing" icon={undefined as never} />
-        <StatCard title="Vehicle Availability" value={availableVehicles.length} hint="Ready for dispatch" icon={undefined as never} />
-        <StatCard title="Driver Availability" value={availableDrivers.length} hint="Available for assignment" icon={undefined as never} />
-        <StatCard title="Dispatch Performance" value={`${dispatchPerformance}%`} hint="Throughput score" icon={undefined as never} />
+        <StatCard title="Route Efficiency" value={`${Math.max(60, Math.round(routeEfficiency.reduce((sum, item) => sum + item.value, 0) / Math.max(1, routeEfficiency.length)))}%`} hint="Planned vs executed routes" icon={Gauge} />
+        <StatCard title="Active Deliveries" value={activeDeliveries.length} hint="On-road and queued" icon={Truck} />
+        <StatCard title="Delayed Shipments" value={delayedShipments.length} hint="Needs re-routing" icon={ShieldAlert} />
+        <StatCard title="Vehicle Availability" value={availableVehicles.length} hint="Ready for dispatch" icon={Warehouse} />
+        <StatCard title="Driver Availability" value={availableDrivers.length} hint="Available for assignment" icon={Users2} />
+        <StatCard title="Dispatch Performance" value={`${dispatchPerformance}%`} hint="Throughput score" icon={Activity} />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
@@ -321,16 +321,16 @@ const TransportManagerAnalytics = ({ range }: { range: (typeof DATE_FILTERS)[num
               </ResponsiveContainer>
             </div>
             <div className="space-y-3 rounded-2xl border border-border/70 p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Operational focus</p>
-              <p className="text-sm leading-6 text-muted-foreground">
+              <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Operational focus</p>
+              <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">
                 Keep vehicle and driver pools aligned to active lanes, then use delayed shipment counts to rebalance dispatch priorities.
               </p>
               <div className="rounded-xl border border-border/70 p-3">
-                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Active queue</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Active queue</p>
                 <p className="mt-2 text-2xl font-semibold">{activeDeliveries.length}</p>
               </div>
               <div className="rounded-xl border border-border/70 p-3">
-                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Delay pressure</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-600 dark:text-slate-400">Delay pressure</p>
                 <p className="mt-2 text-2xl font-semibold">{delayedShipments.length}</p>
               </div>
             </div>

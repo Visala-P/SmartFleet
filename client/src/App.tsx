@@ -12,7 +12,7 @@ import { AnalyticsPage } from "@/pages/app/AnalyticsPage";
 import { NotificationsPage } from "@/pages/app/NotificationsPage";
 import { ShipmentsPage } from "@/pages/app/ShipmentsPage";
 import DispatchPage from "@/pages/app/DispatchPage";
-import RoutePlannerPage from "@/pages/app/RoutePlannerPage";
+import RoutePlannerPage from "./pages/app/RoutePlannerPage";
 import AssignmentsPage from "@/pages/app/AssignmentsPage";
 import { LoginPage } from "@/pages/auth/LoginPage";
 import { SignupPage } from "@/pages/auth/RegisterPage";
@@ -59,6 +59,7 @@ const App = () => (
         <Route path="delivery-updates" element={<ProtectedRoute roles={driverOnly}><NotificationsPage /></ProtectedRoute>} />
         <Route path="route-details" element={<ProtectedRoute roles={driverOnly}><RoutePlannerPage /></ProtectedRoute>} />
       </Route>
+      <Route path="*" element={<LandingPage />} />
     </Routes>
 
     <ToastRegion />

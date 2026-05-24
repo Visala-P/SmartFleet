@@ -53,7 +53,7 @@ const buildDrivers = (): Driver[] =>
     _id: faker.string.uuid(),
     employeeId: `DRV-${100 + index}`,
     name: faker.person.fullName(),
-    phone: faker.phone.number("+91-##########"),
+    phone: `+91 ${faker.string.numeric(10)}`,
     licenseNumber: `DL${faker.number.int({ min: 10, max: 99 })}${faker.string.alphanumeric({ length: 6, casing: "upper" })}`,
     availabilityStatus: pick(driverStatuses),
     rating: Number(faker.number.float({ min: 4.2, max: 5, fractionDigits: 1 })),
@@ -180,8 +180,8 @@ export const SmartFleetSimulationProvider = ({ children }: { children: React.Rea
   const [vehicles, setVehicles] = useState<Vehicle[]>(() => buildVehicles(drivers));
   const [shipments, setShipments] = useState<Shipment[]>(() => buildShipments(vehicles, drivers));
   const [notifications, setNotifications] = useState<NotificationItem[]>(() => buildNotifications());
-  const [inventory, setInventory] = useState<any[]>([]);
-  const [docks, setDocks] = useState<any[]>([]);
+  const [inventory] = useState<any[]>([]);
+  const [docks] = useState<any[]>([]);
   const [dashboard, setDashboard] = useState<DashboardSnapshot>(() => buildDashboard(vehicles, shipments, drivers));
 
   const createVehicle = useCallback((payload: Omit<Vehicle, "_id">) => {
@@ -224,7 +224,7 @@ export const SmartFleetSimulationProvider = ({ children }: { children: React.Rea
         const next: Shipment = { ...item, ...payload };
         if (payload.status && payload.status !== item.status) {
           next.timeline = [
-            ...item.timeline,
+            ...(item.timeline|| []),
             { label: `Status changed to ${payload.status}`, timestamp: new Date(), note: "Live console update" },
           ];
         }
@@ -242,7 +242,7 @@ export const SmartFleetSimulationProvider = ({ children }: { children: React.Rea
       _id: faker.string.uuid(),
       employeeId: payload.employeeId || `DRV-${faker.number.int({ min: 100, max: 999 })}`,
       name: payload.name || faker.person.fullName(),
-      phone: payload.phone || faker.phone.number("+91-##########"),
+      phone: payload.phone || `+91 ${faker.string.numeric(10)}`,
       licenseNumber: payload.licenseNumber || `DL${faker.number.int({ min: 10, max: 99 })}${faker.string.alphanumeric({ length: 6, casing: "upper" })}`,
       availabilityStatus: (payload.availabilityStatus as Driver["availabilityStatus"]) || "Available",
       rating: payload.rating || 4.6,
