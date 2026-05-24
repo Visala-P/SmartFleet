@@ -37,7 +37,9 @@ const startServer = async () => {
     })
   );
   app.use(express.json());
-
+  app.get("/", (req, res) => {
+  res.send("SmartFleet Backend Running Successfully");
+});
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", service: "smartfleet-api" });
   });

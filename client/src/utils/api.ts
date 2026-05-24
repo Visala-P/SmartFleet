@@ -472,7 +472,7 @@ const createSessionFromDemo = (email: string, password: string): AuthSession | n
   };
 };
 
-const createSessionFromApi = (payload: AuthUser & { token?: string; accessToken?: string; authToken?: string }) => {
+export const createSessionFromApi = (payload: AuthUser & { token?: string; accessToken?: string; authToken?: string }) => {
   const rbacRole = normalizeAuthRole(payload.rbacRole ?? payload.role);
   if (!rbacRole) return null;
 
