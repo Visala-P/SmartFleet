@@ -65,19 +65,24 @@ const startServer = async () => {
 
   const app = express();
 
-  app.use(
-    cors({
-      origin: (origin, callback) => {
-        if (!origin || config.corsOrigins.includes(origin)) {
-          return callback(null, true);
-        }
+  const app = express();
 
-        return callback(new Error("Origin not allowed by CORS"));
-      },
-      credentials: true,
-    })
-  );
-  app.use(express.json());
+const app = express();
+
+app.use(express.json());
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || config.corsOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Origin not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
   app.get("/", (req, res) => {
     res.send("SmartFleet Backend Running Successfully");
   });

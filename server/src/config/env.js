@@ -23,7 +23,13 @@ const config = {
   mongoUri: process.env.MONGO_URI || "",
   jwtSecret: process.env.JWT_SECRET || "",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
-  corsOrigins: Array.from(new Set([...defaultOrigins, ...configuredOrigins])),
+  corsOrigins: [
+  "http://localhost:5173",
+  "https://smart-fleet-gilt.vercel.app",
+  ...(process.env.CLIENT_URL
+    ? process.env.CLIENT_URL.split(",")
+    : []),
+],
 };
 
 module.exports = config;
