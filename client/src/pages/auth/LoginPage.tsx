@@ -15,7 +15,7 @@ import logoSrc from "@/assets/logo.png";
 
 const schema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string().min(5),
 });
 
 type FormValues = z.infer<typeof schema>;

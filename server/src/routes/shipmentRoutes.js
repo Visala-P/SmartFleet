@@ -17,8 +17,8 @@ router.use(protect);
 router.get("/", listShipments);
 router.get("/board", shipmentBoard);
 router.get("/:id/timeline", shipmentTimeline);
-router.post("/", authorizeRoles("Admin", "Transport Manager", "Warehouse Staff"), validate(shipmentSchema), createShipment);
-router.put("/:id", authorizeRoles("Admin", "Transport Manager", "Warehouse Staff"), updateShipment);
-router.delete("/:id", authorizeRoles("Admin", "Transport Manager"), deleteShipment);
+router.post("/", authorizeRoles("admin", "transport_manager", "warehouse_staff"), validate(shipmentSchema), createShipment);
+router.put("/:id", authorizeRoles("admin", "transport_manager", "warehouse_staff"), updateShipment);
+router.delete("/:id", authorizeRoles("admin", "transport_manager"), deleteShipment);
 
 module.exports = router;

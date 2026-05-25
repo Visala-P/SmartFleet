@@ -105,25 +105,25 @@ const seed = async () => {
       type: "Shipment Delay",
       title: "Critical Shipment Delayed",
       message: `${shipments.find((item) => item.status === "Delayed")?.shipmentId || "SHP-1001"} delayed due to congestion. ETA updated.`,
-      audienceRoles: ["Admin", "Transport Manager", "Warehouse Staff"],
+      audienceRoles: ["admin", "transport_manager", "warehouse_staff"],
     },
     {
       type: "Maintenance",
       title: "Maintenance Due",
       message: `${vehicles[0].vehicleNumber} due for service within 3 days.`,
-      audienceRoles: ["Admin", "Transport Manager"],
+      audienceRoles: ["admin", "transport_manager"],
     },
     {
       type: "Task",
       title: "Dock Allocation Pending",
       message: `${shipments[1].shipmentId} waiting for dock assignment before shift end.`,
-      audienceRoles: ["Warehouse Staff", "Transport Manager"],
+      audienceRoles: ["warehouse_staff", "transport_manager"],
     },
     {
       type: "Info",
       title: "Delivery Completed",
       message: `${shipments[0].shipmentId} completed and closed in the operations console.`,
-      audienceRoles: ["Admin", "Transport Manager"],
+      audienceRoles: ["admin", "transport_manager"],
     },
   ]);
 

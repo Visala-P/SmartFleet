@@ -6,7 +6,6 @@ import {
   AUTH_STORAGE_KEY,
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_USER_STORAGE_KEY,
-  DEMO_CREDENTIALS,
   LEGACY_AUTH_ROLE_STORAGE_KEY,
   normalizeAuthRole,
   normalizeRoleLabel,
@@ -35,7 +34,7 @@ interface AuthContextValue {
     email: string;
     password: string;
     confirmPassword: string;
-    role?: AuthUser["role"];
+    role: AuthRole;
   }) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -73,6 +72,8 @@ const readJson = <T,>(value: string | null): T | null => {
     return null;
   }
 };
+
+const getTokenFromPayload = (payload: AuthApiUser) => payload.token ?? payload.accessToken ?? payload.authToken ?? "";
 
 const buildSession = (user: AuthUser, token: string, rbacRole: AuthRole): AuthSession => ({
   user: {
@@ -144,37 +145,7 @@ const readStoredSession = (): AuthSession | null => {
     rbacRole
   );
 };
-
-const isDemoCredential = (email: string, password: string) => {
-  const normalizedEmail = email.trim().toLowerCase();
-  // Support existing demo credentials plus a single Admin/Admin fallback
-  if (normalizedEmail === "admin" && password === "Admin") {
-    return { email: "admin", password: "Admin", role: "admin" } as const;
-  }
-
-  return Object.values(DEMO_CREDENTIALS).find((credential) => credential.email === normalizedEmail && credential.password === password) ?? null;
-};
-
-const createDemoSession = (email: string, password: string): AuthSession | null => {
-  const credential = isDemoCredential(email, password);
-  if (!credential) return null;
-
-  const role = credential.role;
-  return buildSession(
-    {
-      id: `demo-${role}`,
-      name: normalizeRoleLabel(role),
-      email: credential.email,
-      role: normalizeRoleLabel(role),
-      rbacRole: role,
-      isActive: true,
-    },
-    `demo-${role}-token`,
-    role
-  );
-};
-
-const createApiSession = (payload: AuthApiUser): AuthSession | null => {
+const createApiSession = (payload: AuthApiUser, fallbackToken: string | null = null): AuthSession | null => {
   if (!payload.email) return null;
 
   const rbacRole = normalizeAuthRole(payload.rbacRole ?? payload.role);
@@ -189,7 +160,9 @@ const createApiSession = (payload: AuthApiUser): AuthSession | null => {
     isActive: payload.isActive ?? true,
   };
 
-  const token = payload.token ?? payload.accessToken ?? payload.authToken ?? "";
+  const token = getTokenFromPayload(payload) || fallbackToken || "";
+  if (!token) return null;
+
   return buildSession(user, token, rbacRole);
 };
 
@@ -202,17 +175,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refreshUser = useCallback(async () => {
     setLoading(true);
+    const storedSession = readStoredSession();
+
+    if (storedSession) {
+      setUser(storedSession.user);
+      setToken(storedSession.token);
+    }
 
     try {
-      const storedSession = readStoredSession();
-      if (storedSession) {
-        setUser(storedSession.user);
-        setToken(storedSession.token);
-        return;
-      }
-
       const { data } = await api.get<{ user?: AuthApiUser; token?: string; accessToken?: string; authToken?: string }>("/auth/me");
-      const session = data.user ? createApiSession({ ...data.user, token: data.token ?? data.accessToken ?? data.authToken }) : null;
+      const session = data.user ? createApiSession({ ...data.user, token: data.token ?? data.accessToken ?? data.authToken }, storedSession?.token ?? null) : null;
 
       if (session) {
         persistSession(session);
@@ -224,14 +196,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       setToken(null);
     } catch (err: unknown) {
-      const fallbackSession = readStoredSession();
-      if (fallbackSession) {
-        setUser(fallbackSession.user);
-        setToken(fallbackSession.token);
-      } else {
-        setUser(null);
-        setToken(null);
-      }
+      clearAuthStorage();
+      setUser(null);
+      setToken(null);
     } finally {
       setLoading(false);
     }
@@ -242,36 +209,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [refreshUser]);
 
   const login = useCallback(async (email: string, password: string) => {
-    // Try real backend login first. If backend is unreachable or login fails,
-    // allow a local demo fallback (single Admin/Admin account) for offline demo mode.
-    try {
-      const { data } = await api.post<{ user?: AuthApiUser; token?: string; accessToken?: string; authToken?: string }>("/auth/login", {
-        email,
-        password,
-      });
+    const { data } = await api.post<{ user?: AuthApiUser; token?: string; accessToken?: string; authToken?: string }>("/auth/login", {
+      email,
+      password,
+    });
 
-      const session = data.user ? createApiSession({ ...data.user, token: data.token ?? data.accessToken ?? data.authToken }) : null;
-      if (!session) {
-        throw new Error("Invalid authentication response");
-      }
-
-      persistSession(session);
-      setUser(session.user);
-      setToken(session.token);
-      return;
-    } catch (error: unknown) {
-      // If backend is down or returns an error, permit demo login for offline use.
-      const offlineDemoSession = createDemoSession(email, password);
-      if (offlineDemoSession) {
-        persistSession(offlineDemoSession);
-        setUser(offlineDemoSession.user);
-        setToken(offlineDemoSession.token);
-        return;
-      }
-
-      if (error instanceof Error) throw error;
-      throw new Error(String(error));
+    const session = data.user ? createApiSession({ ...data.user, token: data.token ?? data.accessToken ?? data.authToken }) : null;
+    if (!session) {
+      throw new Error("Invalid authentication response");
     }
+
+    persistSession(session);
+    setUser(session.user);
+    setToken(session.token);
   }, []);
 
   const signup = useCallback(async (payload: {
@@ -279,7 +229,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     email: string;
     password: string;
     confirmPassword: string;
-    role?: AuthUser["role"];
+    role: AuthRole;
   }) => {
     await api.post("/auth/signup", payload);
   }, []);

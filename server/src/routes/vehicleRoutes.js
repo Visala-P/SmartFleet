@@ -17,8 +17,8 @@ router.use(protect);
 router.get("/", listVehicles);
 router.get("/alerts/maintenance", maintenanceAlerts);
 router.get("/:id", getVehicle);
-router.post("/", authorizeRoles("Admin", "Transport Manager"), validate(vehicleSchema), createVehicle);
-router.put("/:id", authorizeRoles("Admin", "Transport Manager"), updateVehicle);
-router.delete("/:id", authorizeRoles("Admin"), deleteVehicle);
+router.post("/", authorizeRoles("admin", "transport_manager"), validate(vehicleSchema), createVehicle);
+router.put("/:id", authorizeRoles("admin", "transport_manager"), updateVehicle);
+router.delete("/:id", authorizeRoles("admin"), deleteVehicle);
 
 module.exports = router;

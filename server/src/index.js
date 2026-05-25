@@ -6,6 +6,53 @@ const connectDB = require("./config/db");
 const routes = require("./routes");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
+const User = require("./models/User");
+
+const PERMANENT_USERS = [
+  {
+    name: "Admin",
+    email: "admin@gmail.com",
+    password: "admin",
+    role: "admin",
+  },
+  {
+    name: "Transport Manager",
+    email: "transportmanager@gmail.com",
+    password: "manager",
+    role: "transport_manager",
+  },
+];
+
+const LEGACY_ROLE_MAP = {
+  Admin: "admin",
+  "Transport Manager": "transport_manager",
+  Driver: "driver",
+  "Warehouse Staff": "warehouse_staff",
+};
+
+const normalizeLegacyUserRoles = async () => {
+  const entries = Object.entries(LEGACY_ROLE_MAP);
+  for (const [legacyRole, normalizedRole] of entries) {
+    await User.updateMany({ role: legacyRole }, { $set: { role: normalizedRole } });
+  }
+};
+
+const ensurePermanentUsers = async () => {
+  for (const account of PERMANENT_USERS) {
+    const existing = await User.findOne({ email: account.email });
+    if (!existing) {
+      await User.create(account);
+      console.log(`Created permanent account: ${account.email}`);
+      continue;
+    }
+
+    existing.name = account.name;
+    existing.role = account.role;
+    existing.isActive = true;
+    existing.password = account.password;
+    await existing.save();
+  }
+};
 
 const startServer = async () => {
   if (!config.jwtSecret) {
@@ -13,36 +60,27 @@ const startServer = async () => {
   }
 
   await connectDB();
-
-  // Create a local dev admin user if none exist (development only).
-  if (config.nodeEnv !== "production") {
-    try {
-      const User = require("./models/User");
-      const existing = await User.findOne({ role: "Admin" });
-      if (!existing) {
-        await User.create({ name: "Admin", email: "admin@smartfleet.com", password: "admin123", role: "Admin" });
-        console.log("Created local dev admin: admin@smartfleet.com / admin123");
-      }
-    } catch (err) {
-      console.warn("Dev user creation failed:", err.message || err);
-    }
-  }
+  await normalizeLegacyUserRoles();
+  await ensurePermanentUsers();
 
   const app = express();
 
   app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://smart-fleet-55grt1fti-visala-ps-projects.vercel.app",
-    ],
-    credentials: true,
-  })
-);
+    cors({
+      origin: (origin, callback) => {
+        if (!origin || config.corsOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+
+        return callback(new Error("Origin not allowed by CORS"));
+      },
+      credentials: true,
+    })
+  );
   app.use(express.json());
   app.get("/", (req, res) => {
-  res.send("SmartFleet Backend Running Successfully");
-});
+    res.send("SmartFleet Backend Running Successfully");
+  });
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", service: "smartfleet-api" });
   });

@@ -12,7 +12,7 @@ const notificationSchema = new mongoose.Schema(
     audienceRoles: [
       {
         type: String,
-        enum: ["Admin", "Transport Manager", "Driver", "Warehouse Staff"],
+        enum: ["admin", "transport_manager", "driver", "warehouse_staff"],
       },
     ],
     isReadBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

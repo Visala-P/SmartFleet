@@ -12,15 +12,15 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/useToast";
 import logoSrc from "@/assets/logo.png";
-import type { AuthUser } from "@/types";
+import type { AuthRole } from "@/types";
 
 const schema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Enter a valid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string().min(6, "Confirm your password"),
-    role: z.enum(["Admin", "Transport Manager", "Driver", "Warehouse Staff"]),
+    password: z.string().min(5, "Password must be at least 5 characters"),
+    confirmPassword: z.string().min(5, "Confirm your password"),
+    role: z.enum(["driver", "warehouse_staff"]),
   })
   .refine((value) => value.password === value.confirmPassword, {
     message: "Passwords do not match",
@@ -29,7 +29,10 @@ const schema = z
 
 type FormValues = z.infer<typeof schema>;
 
-const roleOptions: AuthUser["role"][] = ["Admin", "Transport Manager", "Driver", "Warehouse Staff"];
+const roleOptions: { value: AuthRole; label: string }[] = [
+  { value: "driver", label: "Driver" },
+  { value: "warehouse_staff", label: "Warehouse Staff" },
+];
 
 export const SignupPage = () => {
   const navigate = useNavigate();
@@ -43,7 +46,7 @@ export const SignupPage = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { role: "Warehouse Staff" },
+    defaultValues: { role: "warehouse_staff" },
   });
 
   if (isAuthenticated) return <Navigate to="/app" replace />;
@@ -101,8 +104,8 @@ export const SignupPage = () => {
                   {...register("role")}
                 >
                   {roleOptions.map((role) => (
-                    <option key={role} value={role}>
-                      {role}
+                    <option key={role.value} value={role.value}>
+                      {role.label}
                     </option>
                   ))}
                 </select>

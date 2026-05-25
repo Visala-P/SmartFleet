@@ -23,31 +23,6 @@ export const AUTH_USER_STORAGE_KEY = "smartfleet_auth_user";
 export const AUTH_ROLE_STORAGE_KEY = "smartfleet_auth_role";
 export const LEGACY_AUTH_ROLE_STORAGE_KEY = "smartfleet_role";
 
-export const DEMO_CREDENTIALS = {
-  admin: {
-    email: "admin@smartfleet.com",
-    password: "admin123",
-    role: "admin" as const,
-  },
-  transport_manager: {
-    email: "manager@smartfleet.com",
-    password: "manager123",
-    role: "transport_manager" as const,
-  },
-  warehouse_staff: {
-    email: "warehouse@smartfleet.com",
-    password: "warehouse123",
-    role: "warehouse_staff" as const,
-  },
-  driver: {
-    email: "driver@smartfleet.com",
-    password: "driver123",
-    role: "driver" as const,
-  },
-} as const;
-
-export type DemoCredentialRole = keyof typeof DEMO_CREDENTIALS;
-
 export interface AuthUser {
   id: string;
   name: string;

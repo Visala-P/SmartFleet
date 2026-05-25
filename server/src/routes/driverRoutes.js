@@ -15,8 +15,8 @@ const router = express.Router();
 router.use(protect);
 router.get("/", listDrivers);
 router.get("/performance/top", driverPerformance);
-router.post("/", authorizeRoles("Admin", "Transport Manager"), validate(driverSchema), createDriver);
-router.put("/:id", authorizeRoles("Admin", "Transport Manager"), updateDriver);
-router.delete("/:id", authorizeRoles("Admin"), deleteDriver);
+router.post("/", authorizeRoles("admin", "transport_manager"), validate(driverSchema), createDriver);
+router.put("/:id", authorizeRoles("admin", "transport_manager"), updateDriver);
+router.delete("/:id", authorizeRoles("admin"), deleteDriver);
 
 module.exports = router;

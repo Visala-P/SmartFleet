@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(protect);
 router.get("/", listNotifications);
-router.post("/", authorizeRoles("Admin", "Transport Manager"), createNotification);
+router.post("/", authorizeRoles("admin", "transport_manager"), createNotification);
 router.patch("/:id/read", markRead);
 
 module.exports = router;
